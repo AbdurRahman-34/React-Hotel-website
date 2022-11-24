@@ -1,0 +1,8 @@
+.nav-container a{
+    text-decoration: none;
+    color: #fff;
+    margin-right: 20px;
+}
+.nav-container a:hover{
+    color: beige;
+}

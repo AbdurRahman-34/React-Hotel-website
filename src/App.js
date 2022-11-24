@@ -5,6 +5,7 @@ import Home from "./Components/HomePage/Home/Home"
 import Signup from './Components/Signup/Signup';
 import Login from './Components/Login/Login';
 import NotFound from './Components/NotFound/NotFound';
+import Footer from './Components/Shared/Footer/Footer';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path='/signup' element={<Signup/>}></Route>
       <Route path='*' element={<NotFound/>}></Route>
     </Routes>
+    <Footer></Footer>
     </div>
   );
 }

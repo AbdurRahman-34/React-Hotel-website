@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import './Signup.css'
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import auth from "../../firebase.init";
+import './Signup.css'
+
 
 const Signup = () => {
 
@@ -10,12 +12,18 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPassword, setConPassword] = useState("");
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
 
 
-  
+
   //All Functions 
-  const [
-    createUserWithEmailAndPassword, user,loading, error,] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user]  = useCreateUserWithEmailAndPassword(auth)
+
+  if(user){
+    navigate('/')
+  }
+
   const handelEmailBlur = (e) => {
     setEmail(e.target.value)
   }
@@ -29,7 +37,16 @@ const Signup = () => {
   }
 
   const handelSignUp = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if(password !== conPassword){
+      setError("You two password don't match")
+      return;
+    }
+    if(password < 6) {
+      setPassword("Password Must be 6 Creacter")
+      return;
+    }
+    createUserWithEmailAndPassword(email, password)
   }
 
   return (
@@ -39,7 +56,7 @@ const Signup = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
 
           
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control onBlur={handelEmailBlur} type="email" placeholder="Enter email" />
         </Form.Group>
 
@@ -56,7 +73,7 @@ const Signup = () => {
           <Form.Control onBlur={handelConPasswordBlur} type="password" placeholder="Confirm Password" />
         </Form.Group>
 
-
+        <p style={{color: 'red'}}> {error}</p>
         <p>Already have a account ? <Link className="login-link" to="/login">Login →</Link></p>
         <Button onSubmit={handelSignUp} variant="primary" type="submit">
           Sign Up
